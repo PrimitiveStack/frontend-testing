@@ -1,0 +1,6 @@
+{
+  "extends": "@primitivestack/config/tsconfig.json",
+  "include": [
+    "src"
+  ]
+}

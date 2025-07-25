@@ -29,8 +29,7 @@
 		"dev": "tsdown --watch"
 	},
 	"dependencies": {
-		"@primitivestack/frontend-testing-core": "workspace:0.0.1",
-		"@testing-library/react": "16.3.0",
+		"@primitivestack/frontend-testing-core": "workspace:*",
 		"@testing-library/user-event": "14.6.1"
 	},
 	"devDependencies": {
