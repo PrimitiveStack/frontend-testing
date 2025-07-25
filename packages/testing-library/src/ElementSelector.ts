@@ -26,15 +26,20 @@ type ElementUserEvents = Pick<
 >;
 
 type DOMElementHandle = UserEventsWithBoundedElements<ElementUserEvents>;
+export type DomElementSelector<TElementKey> = IElementSelector<
+	TElementKey,
+	DOMElementHandle
+>;
 
 export class ElementSelector<
-	TSelectorConfig extends Record<string, () => HTMLElement>,
+	TElementId extends PropertyKey,
 	TElement extends DOMElementHandle,
-> implements IElementSelector<keyof TSelectorConfig, TElement>
+	TSelectorConfig extends Record<TElementId, () => HTMLElement>,
+> implements IElementSelector<TElementId, TElement>
 {
 	constructor(private readonly config: TSelectorConfig) {}
 
-	async get(key: keyof TSelectorConfig) {
+	async get(key: TElementId) {
 		const baseHtmlElement = this.config[key]();
 
 		return {

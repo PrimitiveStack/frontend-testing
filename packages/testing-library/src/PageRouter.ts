@@ -1,5 +1,4 @@
 import type {
-	ElementSelector,
 	PageRouter as IPageRouter,
 	Render,
 } from "@primitivestack/frontend-testing-core";
@@ -8,7 +7,10 @@ export class PageRouter<
 	TNode,
 	TPages extends Record<
 		PropertyKey,
-		{ component: TNode; selector: ElementSelector<unknown, unknown> }
+		{
+			component: TNode;
+			pageController: unknown;
+		}
 	>,
 > implements IPageRouter<keyof TPages>
 {
@@ -21,6 +23,6 @@ export class PageRouter<
 		const element = this.pages[pageId];
 		this.render(element.component);
 
-		return element.selector as unknown as TPages[TPageId]["selector"];
+		return element.pageController as TPages[TPageId]["pageController"];
 	}
 }
