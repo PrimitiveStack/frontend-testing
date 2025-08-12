@@ -3,7 +3,6 @@ import userEvent from "@testing-library/user-event";
 import type { ArrayTail, Simplify } from "type-fest";
 
 type UserEventsWithBoundedElements<
-	// biome-ignore lint/suspicious/noExplicitAny: rest
 	TElementEventMap extends Record<string, (...args: any) => unknown>,
 > = Simplify<{
 	[K in keyof TElementEventMap]: (
@@ -25,8 +24,9 @@ type ElementUserEvents = Pick<
 	| "upload"
 >;
 
-type DOMElementHandle = UserEventsWithBoundedElements<ElementUserEvents>;
-export type DomElementSelector<TElementKey> = IElementSelector<
+type DOMElementHandle = HTMLElement &
+	UserEventsWithBoundedElements<ElementUserEvents>;
+export type DOMElementSelector<TElementKey> = IElementSelector<
 	TElementKey,
 	DOMElementHandle
 >;
@@ -35,7 +35,7 @@ export class ElementSelector<
 	TElementId extends PropertyKey,
 	TElement extends DOMElementHandle,
 	TSelectorConfig extends Record<TElementId, () => HTMLElement>,
-> implements IElementSelector<TElementId, TElement>
+> implements DOMElementSelector<TElementId>
 {
 	constructor(private readonly config: TSelectorConfig) {}
 
@@ -43,6 +43,7 @@ export class ElementSelector<
 		const baseHtmlElement = this.config[key]();
 
 		return {
+			...baseHtmlElement,
 			clear: userEvent.clear.bind(null, baseHtmlElement),
 			click: userEvent.click.bind(null, baseHtmlElement),
 			dblClick: userEvent.dblClick.bind(null, baseHtmlElement),
