@@ -25,7 +25,9 @@
 	},
 	"scripts": {
 		"build": "tsdown",
-		"release:patch": "pnpm version patch && tsdown && pnpm publish",
+		"patch": "pnpm version patch",
+		"release": "tsdown && pnpm publish",
+		"release:patch": "pnpm patch && pnpm release",
 		"dev": "tsdown --watch"
 	}
 }

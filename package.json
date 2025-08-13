@@ -9,6 +9,8 @@
 	},
 	"scripts": {
 		"build": "pnpm run -r build",
-		"dev": "pnpm run -r dev"
+		"dev": "pnpm run -r dev",
+		"patch": "pnpm run -r patch",
+		"release": "pnpm run -r release"
 	}
 }
