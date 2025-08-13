@@ -15,3 +15,5 @@ export const toHandler = (element: HTMLElement) => ({
 		upload: userEvent.upload.bind(null, element),
 	},
 });
+
+export type DOMElementHandler = ReturnType<typeof toHandler>;
