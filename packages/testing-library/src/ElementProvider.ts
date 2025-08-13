@@ -32,17 +32,16 @@ type DOMElementHandle = {
 export abstract class ElementProvider
 	implements IElementProvider<DOMElementHandle>
 {
-	async get() {
-		return this.toElement(await this.getHTMLElement());
+	get() {
+		return this.toElement(this.getHTMLElement());
 	}
 
-	async getMany() {
-		const htmlElements = await this.getManyHTMLElement();
-		return htmlElements.map(this.toElement);
+	getMany() {
+		return this.getManyHTMLElement().map(this.toElement);
 	}
 
-	protected abstract getHTMLElement(): Promise<HTMLElement>;
-	protected abstract getManyHTMLElement(): Promise<HTMLElement[]>;
+	protected abstract getHTMLElement(): HTMLElement;
+	protected abstract getManyHTMLElement(): HTMLElement[];
 
 	private toElement(element: HTMLElement) {
 		return {

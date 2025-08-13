@@ -1,4 +1,4 @@
 export interface ElementProvider<T> {
-	get(): Promise<T>;
-	getMany(): Promise<T[]>;
+	get(): T;
+	getMany(): T[];
 }
