@@ -1,6 +1,6 @@
-import type { ElementSelector as IElementSelector } from "@primitivestack/frontend-testing-core";
 import userEvent from "@testing-library/user-event";
 import type { ArrayTail, Simplify } from "type-fest";
+import type { ElementProvider as IElementProvider } from "../../core/src/ElementProvider";
 
 type UserEventsWithBoundedElements<
 	TElementEventMap extends Record<string, (...args: any) => unknown>,
@@ -28,22 +28,23 @@ type DOMElementHandle = {
 	element: HTMLElement;
 	events: UserEventsWithBoundedElements<ElementUserEvents>;
 };
-export type DOMElementSelector<TElementKey> = IElementSelector<
-	TElementKey,
-	DOMElementHandle
->;
 
-export class ElementSelector<
-	TElementId extends PropertyKey,
-	TElement extends DOMElementHandle,
-	TSelectorConfig extends Record<TElementId, () => HTMLElement>,
-> implements DOMElementSelector<TElementId>
+export abstract class ElementProvider
+	implements IElementProvider<DOMElementHandle>
 {
-	constructor(private readonly config: TSelectorConfig) {}
+	async get() {
+		return this.toElement(await this.getHTMLElement());
+	}
 
-	async get(key: TElementId) {
-		const element = this.config[key]();
+	async getMany() {
+		const htmlElements = await this.getManyHTMLElement();
+		return htmlElements.map(this.toElement);
+	}
 
+	protected abstract getHTMLElement(): Promise<HTMLElement>;
+	protected abstract getManyHTMLElement(): Promise<HTMLElement[]>;
+
+	private toElement(element: HTMLElement) {
 		return {
 			element: element,
 			events: {
@@ -58,6 +59,6 @@ export class ElementSelector<
 				unhover: userEvent.unhover.bind(null, element),
 				upload: userEvent.upload.bind(null, element),
 			},
-		} as TElement;
+		};
 	}
 }

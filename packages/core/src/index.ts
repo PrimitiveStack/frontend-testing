@@ -1,3 +1,3 @@
-export * from "./ElementSelector";
+export * from "./ElementProvider";
 export * from "./PageRouter";
 export * from "./Render";
