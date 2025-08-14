@@ -1,6 +1,7 @@
 {
   "conventionalCommits.scopes": [
     "testing-library",
-    "playwright"
+    "playwright",
+    "puppeteer"
   ]
 }
