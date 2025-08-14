@@ -1,12 +1,9 @@
-import type { Render } from "@primitivestack/frontend-testing-core";
+import type { Component } from "./Component";
 
-export class PageController<TNode> {
-	constructor(
-		private readonly node: TNode,
-		private readonly render: Render<TNode>,
-	) {}
+export class PageController {
+	constructor(private readonly component: Component) {}
 
 	open() {
-		this.render(this.node);
+		this.component.render();
 	}
 }
