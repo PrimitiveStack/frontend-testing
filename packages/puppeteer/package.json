@@ -30,9 +30,10 @@
 		"release:patch": "pnpm patch && pnpm release",
 		"dev": "tsdown --watch"
 	},
-	"dependencies": {},
-	"devDependencies": {
-		"@primitivestack/frontend-testing-core": "workspace:*",
+	"dependencies": {
 		"puppeteer": "24.16.2"
+	},
+	"devDependencies": {
+		"@primitivestack/frontend-testing-core": "workspace:*"
 	}
 }

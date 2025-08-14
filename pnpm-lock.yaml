@@ -37,13 +37,14 @@ importers:
         version: 1.54.2
 
   packages/puppeteer:
+    dependencies:
+      puppeteer:
+        specifier: 24.16.2
+        version: 24.16.2(typescript@5.8.3)
     devDependencies:
       '@primitivestack/frontend-testing-core':
         specifier: workspace:*
         version: link:../core
-      puppeteer:
-        specifier: 24.16.2
-        version: 24.16.2(typescript@5.8.3)
 
   packages/testing-library:
     dependencies:
