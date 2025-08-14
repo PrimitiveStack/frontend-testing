@@ -20,9 +20,9 @@ export class PageRouter<
 	) {}
 
 	navigate<TPageId extends keyof TPages>(pageId: TPageId) {
-		const element = this.pages[pageId];
-		this.render(element.component);
+		const page = this.pages[pageId];
+		this.render(page.component);
 
-		return element.pageController as TPages[TPageId]["pageController"];
+		return page.pageController as TPages[TPageId]["pageController"];
 	}
 }
