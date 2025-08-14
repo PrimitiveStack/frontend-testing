@@ -2,6 +2,7 @@
   "conventionalCommits.scopes": [
     "testing-library",
     "playwright",
-    "puppeteer"
+    "puppeteer",
+    "core"
   ]
 }
