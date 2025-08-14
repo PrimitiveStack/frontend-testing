@@ -1,5 +1,5 @@
 {
-	"name": "@primitivestack/playwright",
+	"name": "@primitivestack/frontend-testing-playwright",
 	"version": "0.0.1",
 	"license": "MIT",
 	"publishConfig": {
