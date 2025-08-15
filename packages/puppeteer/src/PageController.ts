@@ -4,7 +4,7 @@ import type { Driver } from "./Driver";
 export abstract class PageController implements IPageController {
 	protected abstract url: string;
 
-	constructor(private readonly driver: Driver) {}
+	constructor(protected readonly driver: Driver) {}
 
 	async open() {
 		await this.driver.page.goto(this.url);
