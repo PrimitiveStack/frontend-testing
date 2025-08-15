@@ -2,7 +2,7 @@ import type { PageController as IPageController } from "@primitivestack/frontend
 import type { Driver } from "./Driver";
 
 export abstract class PageController implements IPageController {
-	protected abstract url: string;
+	protected abstract readonly url: string;
 
 	constructor(protected readonly driver: Driver) {}
 
