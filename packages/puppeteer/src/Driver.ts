@@ -6,8 +6,8 @@ import puppeteer, {
 
 export class Driver {
 	private constructor(
-		readonly browser: Browser,
-		readonly page: Page,
+		public readonly browser: Browser,
+		public readonly page: Page,
 	) {}
 
 	public static async create(options?: LaunchOptions) {

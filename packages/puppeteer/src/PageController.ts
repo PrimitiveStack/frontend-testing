@@ -1,10 +1,11 @@
+import type { PageController as IPageController } from "@primitivestack/frontend-testing-core";
 import type { Driver } from "./Driver";
 
-export class PageController {
-	constructor(
-		private readonly url: string,
-		private readonly driver: Driver,
-	) {}
+export abstract class PageController implements IPageController {
+	protected abstract url: string;
+
+	constructor(private readonly driver: Driver) {}
+
 	async open() {
 		await this.driver.page.goto(this.url);
 	}
