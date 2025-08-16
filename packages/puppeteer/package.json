@@ -1,6 +1,6 @@
 {
 	"name": "@primitivestack/frontend-testing-puppeteer",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"license": "MIT",
 	"publishConfig": {
 		"access": "public"
@@ -10,6 +10,21 @@
 		"url": "git+https://github.com/PrimitiveStack/frontend-testing.git"
 	},
 	"type": "module",
+	"scripts": {
+		"build": "tsdown",
+		"patch": "pnpm version patch",
+		"release": "tsdown && pnpm publish",
+		"release:patch": "pnpm patch && pnpm release",
+		"dev": "tsdown --watch"
+	},
+	"dependencies": {
+		"puppeteer": "24.16.2",
+		"ramda": "0.31.3"
+	},
+	"devDependencies": {
+		"@primitivestack/frontend-testing-core": "workspace:*",
+		"@types/ramda": "0.31.0"
+	},
 	"files": [
 		"dist"
 	],
@@ -22,18 +37,5 @@
 			"require": "./dist/index.cjs"
 		},
 		"./package.json": "./package.json"
-	},
-	"scripts": {
-		"build": "tsdown",
-		"patch": "pnpm version patch",
-		"release": "tsdown && pnpm publish",
-		"release:patch": "pnpm patch && pnpm release",
-		"dev": "tsdown --watch"
-	},
-	"dependencies": {
-		"puppeteer": "24.16.2"
-	},
-	"devDependencies": {
-		"@primitivestack/frontend-testing-core": "workspace:*"
 	}
 }
