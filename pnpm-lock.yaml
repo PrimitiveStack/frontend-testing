@@ -24,7 +24,11 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/core: {}
+  packages/core:
+    devDependencies:
+      '@primitivestack/types':
+        specifier: 0.0.2
+        version: 0.0.2
 
   packages/puppeteer:
     dependencies:
@@ -173,6 +177,9 @@ packages:
 
   '@primitivestack/config@0.0.1':
     resolution: {integrity: sha512-RDZIvcfiBhwQVCIKOvbGuK/gF8i6jclI3RkhkejjA6gnWaplr3pg+aMM9tQutbI949Zzsi5EnO/ZKdYwaHZMlg==}
+
+  '@primitivestack/types@0.0.2':
+    resolution: {integrity: sha512-bf7JcqF5mMbs5bqSbSHaxjFxnDVOaSMcALzAqEYprZqsmcy/whkaTyF39CV48OLo3xcb9f2XUuPPek3PihRM8Q==}
 
   '@puppeteer/browsers@2.10.6':
     resolution: {integrity: sha512-pHUn6ZRt39bP3698HFQlu2ZHCkS/lPcpv7fVQcGBSzNNygw171UXAKrCUhy+TEMw4lEttOKDgNpb04hwUAJeiQ==}
@@ -943,6 +950,8 @@ snapshots:
   '@oxc-project/types@0.77.3': {}
 
   '@primitivestack/config@0.0.1': {}
+
+  '@primitivestack/types@0.0.2': {}
 
   '@puppeteer/browsers@2.10.6':
     dependencies:

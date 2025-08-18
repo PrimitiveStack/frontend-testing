@@ -1,6 +1,6 @@
 {
 	"name": "@primitivestack/frontend-testing-core",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"license": "MIT",
 	"publishConfig": {
 		"access": "public"
@@ -16,6 +16,9 @@
 		"release": "tsdown && pnpm publish",
 		"release:patch": "pnpm patch && pnpm release",
 		"dev": "tsdown --watch"
+	},
+	"devDependencies": {
+		"@primitivestack/types": "0.0.2"
 	},
 	"files": [
 		"dist"

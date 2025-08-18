@@ -1,8 +1,6 @@
-import type { NonEmptyObject } from "type-fest";
+import type { NonEmptyPartial } from "@primitivestack/types";
 
-export type ElementConfig = NonEmptyObject<
-	Partial<{
-		properties: Partial<Record<"labelText" | "text", string>>;
-		attributes: Record<string, string>;
-	}>
->;
+export type ElementConfig = NonEmptyPartial<{
+	properties: NonEmptyPartial<Record<"labelText" | "text", string>>;
+	attributes: Record<string, string>;
+}>;
