@@ -84,8 +84,10 @@ export const toElements = <T extends PageConfig>(config: T, driver: Driver) =>
 					for (const [name, value] of Object.entries(attributes)) {
 						const selector = toAttributeSelector(name, value);
 
-						const elements = await driver.page.waitForFunction(() =>
-							Array.from(document.querySelectorAll(selector)),
+						const elements = await driver.page.waitForFunction(
+							(selector) => Array.from(document.querySelectorAll(selector)),
+							{},
+							selector,
 						);
 						if (elements) return elements;
 					}
