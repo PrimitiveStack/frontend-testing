@@ -47,12 +47,27 @@ export const toElements = <T extends PageConfig>(config: T, driver: Driver) =>
 					if (text) {
 						const handle = await driver.page.waitForFunction(
 							(text) => {
-								const elements = document.querySelectorAll("*");
-								for (const element of elements) {
-									if (element.textContent.includes(text)) {
-										return element;
+								const walker = document.createTreeWalker(
+									document.body,
+									NodeFilter.SHOW_ELEMENT,
+									{
+										acceptNode: (node: Element) => {
+											const hasChildElements = node.children.length > 0;
+											return hasChildElements
+												? NodeFilter.FILTER_SKIP
+												: NodeFilter.FILTER_ACCEPT;
+										},
+									},
+								);
+
+								let currentNode: Element | null;
+								while ((currentNode = walker.nextNode() as Element)) {
+									if (currentNode.textContent?.trim() === text) {
+										return currentNode;
 									}
 								}
+
+								return null;
 							},
 							{},
 							text,
