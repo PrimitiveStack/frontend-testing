@@ -1,6 +1,6 @@
 {
 	"name": "@primitivestack/frontend-testing-library",
-	"version": "0.0.16",
+	"version": "0.0.17",
 	"license": "MIT",
 	"publishConfig": {
 		"access": "public"
@@ -32,9 +32,11 @@
 	},
 	"dependencies": {
 		"@primitivestack/frontend-testing-core": "workspace:*",
-		"@testing-library/user-event": "14.6.1"
+		"@testing-library/user-event": "14.6.1",
+		"ramda": "0.31.3"
 	},
 	"devDependencies": {
+		"@types/ramda": "0.31.0",
 		"@types/react": "19.1.8"
 	}
 }
