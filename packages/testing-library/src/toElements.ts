@@ -1,16 +1,33 @@
 import type { PageConfig } from "@primitivestack/frontend-testing-core";
 import { map } from "ramda";
 import type { ArrayTail, SimplifyDeep } from "type-fest";
+import { type ElementHandler, toHandler } from "./toHandler";
+
+type AwaitedReturn<T extends (...args: any) => unknown> = Awaited<
+	ReturnType<T>
+>;
 
 type Screen = {
-	getByText: (id: string, ...params: any[]) => unknown;
-	findByText: (id: string, ...params: any[]) => Promise<unknown>;
-	findAllByText: (id: string, ...params: any[]) => Promise<unknown[]>;
-	queryByText: (id: string, ...params: any[]) => unknown | null;
-	getByLabelText: (id: string, ...params: any[]) => unknown;
-	findByLabelText: (id: string, ...params: any[]) => Promise<unknown>;
-	findAllByLabelText: (id: string, ...params: any[]) => Promise<unknown[]>;
-	queryByLabelText: (id: string, ...params: any[]) => unknown | null;
+	getByText: <T extends Element>(id: string, ...params: any[]) => T;
+	findByText: <T extends Element>(id: string, ...params: any[]) => Promise<T>;
+	findAllByText: <T extends Element>(
+		id: string,
+		...params: any[]
+	) => Promise<T[]>;
+	queryByText: <T extends Element>(id: string, ...params: any[]) => T | null;
+	getByLabelText: <T extends Element>(id: string, ...params: any[]) => T;
+	findByLabelText: <T extends Element>(
+		id: string,
+		...params: any[]
+	) => Promise<T>;
+	findAllByLabelText: <T extends Element>(
+		id: string,
+		...params: any[]
+	) => Promise<T[]>;
+	queryByLabelText: <T extends Element>(
+		id: string,
+		...params: any[]
+	) => T | null;
 };
 
 type ConvertPageConfig<
@@ -20,68 +37,84 @@ type ConvertPageConfig<
 	[K in keyof TConfig]: (TConfig[K] extends { properties: { text: infer P } }
 		? P extends { type: "argument" }
 			? {
-					getByText(
+					getByText<T extends ReturnType<TScreen["getByText"]>>(
 						...params: Parameters<TScreen["getByText"]>
-					): Promise<ReturnType<TScreen["getByText"]>>;
-					findByText(
-						...params: ArrayTail<Parameters<TScreen["queryByText"]>>
-					): Promise<ReturnType<TScreen["queryByText"]>>;
-					waitForByText(
-						...params: ArrayTail<Parameters<TScreen["findByText"]>>
-					): Promise<ReturnType<TScreen["findByText"]>>;
-					waitForAllByText(
-						...params: ArrayTail<Parameters<TScreen["findAllByText"]>>
-					): Promise<ReturnType<TScreen["findAllByText"]>>;
+					): ElementHandler<T>;
+					findByText<T extends ReturnType<TScreen["queryByText"]>>(
+						...params: Parameters<TScreen["queryByText"]>
+					): T extends Element ? ElementHandler<T> : null;
+					waitForByText<T extends AwaitedReturn<TScreen["findByText"]>>(
+						...params: Parameters<TScreen["findByText"]>
+					): Promise<ElementHandler<T>>;
+					waitForAllByText<
+						T extends AwaitedReturn<TScreen["findAllByText"]>[number],
+					>(
+						...params: Parameters<TScreen["findAllByText"]>
+					): Promise<ElementHandler<T>[]>;
 				}
 			: {
-					getByText(
+					getByText<T extends ReturnType<TScreen["getByText"]>>(
 						...params: ArrayTail<Parameters<TScreen["getByText"]>>
-					): Promise<ReturnType<TScreen["getByText"]>>;
-					findByText(
+					): ElementHandler<T>;
+					findByText<T extends ReturnType<TScreen["queryByText"]>>(
 						...params: ArrayTail<Parameters<TScreen["queryByText"]>>
-					): Promise<ReturnType<TScreen["queryByText"]>>;
-					waitForByText(
+					): T extends Element ? ElementHandler<T> : null;
+					waitForByText<T extends AwaitedReturn<TScreen["findByText"]>>(
 						...params: ArrayTail<Parameters<TScreen["findByText"]>>
-					): Promise<ReturnType<TScreen["findByText"]>>;
-					waitForAllByText(
+					): Promise<ElementHandler<T>>;
+					waitForAllByText<
+						T extends AwaitedReturn<TScreen["findAllByText"]>[number],
+					>(
 						...params: ArrayTail<Parameters<TScreen["findAllByText"]>>
-					): Promise<ReturnType<TScreen["findAllByText"]>>;
+					): Promise<ElementHandler<T>[]>;
 				}
 		: {}) &
 		(TConfig[K] extends { properties: { labelText: infer P } }
 			? P extends { type: "argument" }
 				? {
-						getByLabelText(
+						getByLabelText<T extends ReturnType<TScreen["getByLabelText"]>>(
 							...params: Parameters<TScreen["getByLabelText"]>
-						): Promise<ReturnType<TScreen["getByLabelText"]>>;
-						findByLabelText(
+						): ElementHandler<T>;
+						findByLabelText<T extends ReturnType<TScreen["queryByLabelText"]>>(
 							...params: Parameters<TScreen["queryByLabelText"]>
-						): Promise<ReturnType<TScreen["queryByLabelText"]>>;
-						waitForByLabelText(
+						): T extends Element ? ElementHandler<T> : null;
+						waitForByLabelText<
+							T extends AwaitedReturn<TScreen["findByLabelText"]>,
+						>(
 							...params: Parameters<TScreen["findByLabelText"]>
-						): Promise<ReturnType<TScreen["findByLabelText"]>>;
-						waitForAllByLabelText(
+						): Promise<ElementHandler<T>>;
+						waitForAllByLabelText<
+							T extends AwaitedReturn<TScreen["findAllByLabelText"]>[number],
+						>(
 							...params: Parameters<TScreen["findAllByLabelText"]>
-						): Promise<ReturnType<TScreen["findAllByLabelText"]>>;
+						): Promise<ElementHandler<T>[]>;
 					}
 				: {
-						getByLabelText(
+						getByLabelText<T extends ReturnType<TScreen["getByLabelText"]>>(
 							...params: ArrayTail<Parameters<TScreen["getByLabelText"]>>
-						): Promise<ReturnType<TScreen["getByText"]>>;
-						findByLabelText(
+						): ElementHandler<T>;
+						findByLabelText<T extends ReturnType<TScreen["queryByLabelText"]>>(
 							...params: ArrayTail<Parameters<TScreen["queryByLabelText"]>>
-						): Promise<ReturnType<TScreen["queryByLabelText"]>>;
-						waitForByLabelText(
+						): T extends Element ? ElementHandler<T> : null;
+						waitForByLabelText<
+							T extends AwaitedReturn<TScreen["findByLabelText"]>,
+						>(
 							...params: ArrayTail<Parameters<TScreen["findByLabelText"]>>
-						): Promise<ReturnType<TScreen["findByLabelText"]>>;
-						waitForAllByLabelText(
+						): Promise<ElementHandler<T>>;
+						waitForAllByLabelText<
+							T extends AwaitedReturn<TScreen["findAllByLabelText"]>[number],
+						>(
 							...params: ArrayTail<Parameters<TScreen["findAllByLabelText"]>>
-						): Promise<ReturnType<TScreen["findAllByLabelText"]>>;
+						): Promise<ElementHandler<T>[]>;
 					}
 			: {});
 }>;
 
-export const toElements = <TConfig extends PageConfig, TScreen extends Screen>(
+export const toElements = <
+	TConfig extends PageConfig,
+	TElement extends Element,
+	TScreen extends Screen,
+>(
 	config: TConfig,
 	screen: TScreen,
 ) =>
@@ -93,6 +126,40 @@ export const toElements = <TConfig extends PageConfig, TScreen extends Screen>(
 		if (properties) {
 			const { labelText, text } = properties;
 
+			if (text) {
+				if (text.type === "const") {
+					const { value } = text;
+
+					element = {
+						...element,
+						getByText: (...params: any[]) =>
+							toHandler(screen.getByText(value, ...params)),
+						findByText(...params: any[]) {
+							const element = screen.queryByText(value, ...params);
+							return element ? toHandler(element) : element;
+						},
+						waitForByText: async (...params: any[]) =>
+							toHandler(await screen.findByText(value, ...params)),
+						waitForAllByText: async (...params: any[]) =>
+							(await screen.findAllByText(value, ...params)).map(toHandler),
+					};
+				}
+
+				element = {
+					...element,
+					getByText: (value: string, ...params: any[]) =>
+						toHandler(screen.getByText(value, ...params)),
+					findByText(value: string, ...params: any[]) {
+						const element = screen.queryByText(value, ...params);
+						return element ? toHandler(element) : element;
+					},
+					waitForByText: async (value: string, ...params: any[]) =>
+						toHandler(await screen.findByText(value, ...params)),
+					waitForAllByText: async (value: string, ...params: any[]) =>
+						(await screen.findAllByText(value, ...params)).map(toHandler),
+				};
+			}
+
 			if (labelText) {
 				if (labelText.type === "const") {
 					const { value } = labelText;
@@ -100,55 +167,32 @@ export const toElements = <TConfig extends PageConfig, TScreen extends Screen>(
 					element = {
 						...element,
 						getByLabelText: (...params: any[]) =>
-							screen.getByLabelText(value, ...params),
-						findByLabelText: (...params: any[]) =>
-							screen.queryByLabelText(value, ...params),
-						waitForByLabelText: (...params: any[]) =>
-							screen.findByLabelText(value, ...params),
-						waitForAllByLabelText: (...params: any[]) =>
-							screen.findAllByLabelText(value, ...params),
+							toHandler(screen.getByLabelText(value, ...params)),
+						findByLabelText(...params: any[]) {
+							const element = screen.queryByLabelText(value, ...params);
+							return element ? toHandler(element) : element;
+						},
+						waitForByLabelText: async (...params: any[]) =>
+							toHandler(await screen.findByLabelText(value, ...params)),
+						waitForAllByLabelText: async (...params: any[]) =>
+							(await screen.findAllByLabelText(value, ...params)).map(
+								toHandler,
+							),
 					};
 				}
 
 				element = {
 					...element,
 					getByLabelText: (value: string, ...params: any[]) =>
-						screen.getByLabelText(value, ...params),
-					findByLabelText: (value: string, ...params: any[]) =>
-						screen.queryByLabelText(value, ...params),
-					waitForByLabelText: (value: string, ...params: any[]) =>
-						screen.findByLabelText(value, ...params),
-					waitForAllByLabelText: (value: string, ...params: any[]) =>
-						screen.findAllByLabelText(value, ...params),
-				};
-			}
-
-			if (text) {
-				if (text.type === "const") {
-					const { value } = text;
-
-					element = {
-						...element,
-						getByText: (...params: any[]) => screen.getByText(value, ...params),
-						findByText: (...params: any[]) =>
-							screen.queryByText(value, ...params),
-						waitForByText: (...params: any[]) =>
-							screen.findByText(value, ...params),
-						waitForAllByText: (...params: any[]) =>
-							screen.findAllByText(value, ...params),
-					};
-				}
-
-				element = {
-					...element,
-					getByText: (value: string, ...params: any[]) =>
-						screen.getByText(value, ...params),
-					findByText: (value: string, ...params: any[]) =>
-						screen.queryByText(value, ...params),
-					waitForByText: (value: string, ...params: any[]) =>
-						screen.findByText(value, ...params),
-					waitForAllByText: (value: string, ...params: any[]) =>
-						screen.findAllByText(value, ...params),
+						toHandler(screen.getByLabelText(value, ...params)),
+					findByLabelText(value: string, ...params: any[]) {
+						const element = screen.queryByLabelText(value, ...params);
+						return element ? toHandler(element) : element;
+					},
+					waitForByLabelText: async (value: string, ...params: any[]) =>
+						toHandler(await screen.findByLabelText(value, ...params)),
+					waitForAllByLabelText: async (value: string, ...params: any[]) =>
+						(await screen.findAllByLabelText(value, ...params)).map(toHandler),
 				};
 			}
 		}
