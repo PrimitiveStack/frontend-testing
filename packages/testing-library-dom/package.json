@@ -1,5 +1,5 @@
 {
-	"name": "@primitivestack/frontend-testing-library",
+	"name": "@primitivestack/frontend-testing-library-dom",
 	"version": "0.0.18",
 	"license": "MIT",
 	"publishConfig": {
