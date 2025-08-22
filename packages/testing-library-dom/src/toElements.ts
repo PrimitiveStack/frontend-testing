@@ -7,7 +7,7 @@ type AwaitedReturn<T extends (...args: any) => unknown> = Awaited<
 	ReturnType<T>
 >;
 
-export type Screen<TElement extends Element = Element> = {
+export type Screen<TElement extends Element> = {
 	getByText: <T extends TElement>(id: string, ...params: any[]) => T;
 	findByText: <T extends TElement>(id: string, ...params: any[]) => Promise<T>;
 	findAllByText: <T extends TElement>(
@@ -41,105 +41,134 @@ export type Screen<TElement extends Element = Element> = {
 
 export type ConvertPageConfig<
 	TConfig extends PageConfig,
-	TScreen extends Screen,
+	TElement extends Element,
 > = SimplifyDeep<{
 	[K in keyof TConfig]: (TConfig[K] extends { properties: { text: infer P } }
 		? P extends { type: "argument" }
 			? {
-					getByText<T extends ReturnType<TScreen["getByText"]>>(
-						...params: Parameters<TScreen["getByText"]>
+					getByText<T extends ReturnType<Screen<TElement>["getByText"]>>(
+						...params: Parameters<Screen<TElement>["getByText"]>
 					): ElementHandler<T>;
-					findByText<T extends ReturnType<TScreen["queryByText"]>>(
-						...params: Parameters<TScreen["queryByText"]>
+					findByText<T extends ReturnType<Screen<TElement>["queryByText"]>>(
+						...params: Parameters<Screen<TElement>["queryByText"]>
 					): T extends Element ? ElementHandler<T> : null;
-					waitForByText<T extends AwaitedReturn<TScreen["findByText"]>>(
-						...params: Parameters<TScreen["findByText"]>
+					waitForByText<
+						T extends AwaitedReturn<Screen<TElement>["findByText"]>,
+					>(
+						...params: Parameters<Screen<TElement>["findByText"]>
 					): Promise<ElementHandler<T>>;
 					waitForAllByText<
-						T extends AwaitedReturn<TScreen["findAllByText"]>[number],
+						T extends AwaitedReturn<Screen<TElement>["findAllByText"]>[number],
 					>(
-						...params: Parameters<TScreen["findAllByText"]>
+						...params: Parameters<Screen<TElement>["findAllByText"]>
 					): Promise<ElementHandler<T>[]>;
 				}
 			: {
-					getByText<T extends ReturnType<TScreen["getByText"]>>(
-						...params: ArrayTail<Parameters<TScreen["getByText"]>>
+					getByText<T extends ReturnType<Screen<TElement>["getByText"]>>(
+						...params: ArrayTail<Parameters<Screen<TElement>["getByText"]>>
 					): ElementHandler<T>;
-					findByText<T extends ReturnType<TScreen["queryByText"]>>(
-						...params: ArrayTail<Parameters<TScreen["queryByText"]>>
+					findByText<T extends ReturnType<Screen<TElement>["queryByText"]>>(
+						...params: ArrayTail<Parameters<Screen<TElement>["queryByText"]>>
 					): T extends Element ? ElementHandler<T> : null;
-					waitForByText<T extends AwaitedReturn<TScreen["findByText"]>>(
-						...params: ArrayTail<Parameters<TScreen["findByText"]>>
+					waitForByText<
+						T extends AwaitedReturn<Screen<TElement>["findByText"]>,
+					>(
+						...params: ArrayTail<Parameters<Screen<TElement>["findByText"]>>
 					): Promise<ElementHandler<T>>;
 					waitForAllByText<
-						T extends AwaitedReturn<TScreen["findAllByText"]>[number],
+						T extends AwaitedReturn<Screen<TElement>["findAllByText"]>[number],
 					>(
-						...params: ArrayTail<Parameters<TScreen["findAllByText"]>>
+						...params: ArrayTail<Parameters<Screen<TElement>["findAllByText"]>>
 					): Promise<ElementHandler<T>[]>;
 				}
 		: {}) &
 		(TConfig[K] extends { properties: { labelText: infer P } }
 			? P extends { type: "argument" }
 				? {
-						getByLabelText<T extends ReturnType<TScreen["getByLabelText"]>>(
-							...params: Parameters<TScreen["getByLabelText"]>
+						getByLabelText<
+							T extends ReturnType<Screen<TElement>["getByLabelText"]>,
+						>(
+							...params: Parameters<Screen<TElement>["getByLabelText"]>
 						): ElementHandler<T>;
-						findByLabelText<T extends ReturnType<TScreen["queryByLabelText"]>>(
-							...params: Parameters<TScreen["queryByLabelText"]>
+						findByLabelText<
+							T extends ReturnType<Screen<TElement>["queryByLabelText"]>,
+						>(
+							...params: Parameters<Screen<TElement>["queryByLabelText"]>
 						): T extends Element ? ElementHandler<T> : null;
 						waitForByLabelText<
-							T extends AwaitedReturn<TScreen["findByLabelText"]>,
+							T extends AwaitedReturn<Screen<TElement>["findByLabelText"]>,
 						>(
-							...params: Parameters<TScreen["findByLabelText"]>
+							...params: Parameters<Screen<TElement>["findByLabelText"]>
 						): Promise<ElementHandler<T>>;
 						waitForAllByLabelText<
-							T extends AwaitedReturn<TScreen["findAllByLabelText"]>[number],
+							T extends AwaitedReturn<
+								Screen<TElement>["findAllByLabelText"]
+							>[number],
 						>(
-							...params: Parameters<TScreen["findAllByLabelText"]>
+							...params: Parameters<Screen<TElement>["findAllByLabelText"]>
 						): Promise<ElementHandler<T>[]>;
 					}
 				: {
-						getByLabelText<T extends ReturnType<TScreen["getByLabelText"]>>(
-							...params: ArrayTail<Parameters<TScreen["getByLabelText"]>>
+						getByLabelText<
+							T extends ReturnType<Screen<TElement>["getByLabelText"]>,
+						>(
+							...params: ArrayTail<
+								Parameters<Screen<TElement>["getByLabelText"]>
+							>
 						): ElementHandler<T>;
-						findByLabelText<T extends ReturnType<TScreen["queryByLabelText"]>>(
-							...params: ArrayTail<Parameters<TScreen["queryByLabelText"]>>
+						findByLabelText<
+							T extends ReturnType<Screen<TElement>["queryByLabelText"]>,
+						>(
+							...params: ArrayTail<
+								Parameters<Screen<TElement>["queryByLabelText"]>
+							>
 						): T extends Element ? ElementHandler<T> : null;
 						waitForByLabelText<
-							T extends AwaitedReturn<TScreen["findByLabelText"]>,
+							T extends AwaitedReturn<Screen<TElement>["findByLabelText"]>,
 						>(
-							...params: ArrayTail<Parameters<TScreen["findByLabelText"]>>
+							...params: ArrayTail<
+								Parameters<Screen<TElement>["findByLabelText"]>
+							>
 						): Promise<ElementHandler<T>>;
 						waitForAllByLabelText<
-							T extends AwaitedReturn<TScreen["findAllByLabelText"]>[number],
+							T extends AwaitedReturn<
+								Screen<TElement>["findAllByLabelText"]
+							>[number],
 						>(
-							...params: ArrayTail<Parameters<TScreen["findAllByLabelText"]>>
+							...params: ArrayTail<
+								Parameters<Screen<TElement>["findAllByLabelText"]>
+							>
 						): Promise<ElementHandler<T>[]>;
 					}
 			: {}) &
 		(TConfig[K] extends { attributes: { title: string } }
 			? {
-					getByTitle<T extends ReturnType<TScreen["getByTitle"]>>(
-						...params: ArrayTail<Parameters<TScreen["getByTitle"]>>
+					getByTitle<T extends ReturnType<Screen<TElement>["getByTitle"]>>(
+						...params: ArrayTail<Parameters<Screen<TElement>["getByTitle"]>>
 					): ElementHandler<T>;
-					findByTitle<T extends ReturnType<TScreen["queryByTitle"]>>(
-						...params: ArrayTail<Parameters<TScreen["queryByTitle"]>>
+					findByTitle<T extends ReturnType<Screen<TElement>["queryByTitle"]>>(
+						...params: ArrayTail<Parameters<Screen<TElement>["queryByTitle"]>>
 					): T extends Element ? ElementHandler<T> : null;
-					waitForByTitle<T extends AwaitedReturn<TScreen["findByTitle"]>>(
-						...params: ArrayTail<Parameters<TScreen["findByTitle"]>>
+					waitForByTitle<
+						T extends AwaitedReturn<Screen<TElement>["findByTitle"]>,
+					>(
+						...params: ArrayTail<Parameters<Screen<TElement>["findByTitle"]>>
 					): Promise<ElementHandler<T>>;
 					waitForAllByTitle<
-						T extends AwaitedReturn<TScreen["findAllByTitle"]>[number],
+						T extends AwaitedReturn<Screen<TElement>["findAllByTitle"]>[number],
 					>(
-						...params: ArrayTail<Parameters<TScreen["findAllByTitle"]>>
+						...params: ArrayTail<Parameters<Screen<TElement>["findAllByTitle"]>>
 					): Promise<ElementHandler<T>[]>;
 				}
 			: {});
 }>;
 
-export const toElements = <TConfig extends PageConfig, TScreen extends Screen>(
+export const toElements = <
+	TConfig extends PageConfig,
+	TElement extends Element,
+>(
 	config: TConfig,
-	screen: TScreen,
+	screen: Screen<TElement>,
 ) =>
 	map((value) => {
 		const { properties, attributes } = value;
@@ -241,4 +270,4 @@ export const toElements = <TConfig extends PageConfig, TScreen extends Screen>(
 		}
 
 		return element;
-	}, config) as ConvertPageConfig<TConfig, TScreen>;
+	}, config) as ConvertPageConfig<TConfig, TElement>;

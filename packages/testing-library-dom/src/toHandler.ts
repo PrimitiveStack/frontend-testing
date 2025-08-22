@@ -1,23 +1,5 @@
 import userEvent from "@testing-library/user-event";
 
-type Bind<
-	T extends (...args: any[]) => any,
-	BoundArgs extends readonly any[] = [],
-> = T extends (...args: any[]) => infer Return
-	? T extends (...args: readonly [...BoundArgs, ...infer Rest]) => any
-		? (...args: Rest) => Return
-		: never
-	: never;
-
-export type BoundedFunctions<
-	TElementEventMap extends Record<string, (...args: any) => unknown>,
-	T extends readonly any[],
-> = {
-	[K in keyof TElementEventMap as Bind<TElementEventMap[K], T> extends never
-		? never
-		: K]: Bind<TElementEventMap[K], T>;
-};
-
 export type TestingLibraryElementUserEvents = Pick<
 	typeof userEvent,
 	| "clear"
@@ -32,29 +14,27 @@ export type TestingLibraryElementUserEvents = Pick<
 	| "upload"
 >;
 
-export type TestingLibraryDOMElementHandle = BoundedFunctions<
-	TestingLibraryElementUserEvents,
-	[Element]
->;
+type BoundFunction<T> = T extends (
+	element: any,
+	...args: infer Args
+) => infer Return
+	? (...args: Args) => Return
+	: never;
+
+type BaseEvents = {
+	[K in Exclude<
+		keyof TestingLibraryElementUserEvents,
+		"upload"
+	>]: BoundFunction<TestingLibraryElementUserEvents[K]>;
+};
+
+type UploadEvent<T extends Element> = T extends HTMLElement
+	? { upload: BoundFunction<TestingLibraryElementUserEvents["upload"]> }
+	: {};
 
 export type ElementHandler<T extends Element> = {
-	element: Element;
-	events: BoundedFunctions<
-		Pick<
-			typeof userEvent,
-			| "clear"
-			| "click"
-			| "dblClick"
-			| "deselectOptions"
-			| "hover"
-			| "selectOptions"
-			| "tripleClick"
-			| "type"
-			| "unhover"
-			| "upload"
-		>,
-		[T]
-	>;
+	element: T;
+	events: BaseEvents & UploadEvent<T>;
 };
 
 export const toHandler = <T extends Element>(element: T) =>
