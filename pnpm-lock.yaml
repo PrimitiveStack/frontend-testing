@@ -65,6 +65,28 @@ importers:
         specifier: 19.1.8
         version: 19.1.8
 
+  packages/testing-library-dom:
+    dependencies:
+      '@primitivestack/frontend-testing-core':
+        specifier: workspace:*
+        version: link:../core
+      '@testing-library/user-event':
+        specifier: 14.6.1
+        version: 14.6.1(@testing-library/dom@10.4.1)
+      ramda:
+        specifier: 0.31.3
+        version: 0.31.3
+    devDependencies:
+      '@testing-library/dom':
+        specifier: 10.4.1
+        version: 10.4.1
+      '@types/ramda':
+        specifier: 0.31.0
+        version: 0.31.0
+      '@types/react':
+        specifier: 19.1.8
+        version: 19.1.8
+
 packages:
 
   '@babel/code-frame@7.27.1':
@@ -271,6 +293,10 @@ packages:
 
   '@testing-library/dom@10.4.0':
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}
+    engines: {node: '>=18'}
+
+  '@testing-library/dom@10.4.1':
+    resolution: {integrity: sha512-o4PXJQidqJl82ckFaXUeoAW+XysPLauYI43Abki5hABd853iMhitooc6znOnczgbTYmEP6U6/y1ZyKAIsvMKGg==}
     engines: {node: '>=18'}
 
   '@testing-library/user-event@14.6.1':
@@ -1033,9 +1059,24 @@ snapshots:
       lz-string: 1.5.0
       pretty-format: 27.5.1
 
+  '@testing-library/dom@10.4.1':
+    dependencies:
+      '@babel/code-frame': 7.27.1
+      '@babel/runtime': 7.28.2
+      '@types/aria-query': 5.0.4
+      aria-query: 5.3.0
+      dom-accessibility-api: 0.5.16
+      lz-string: 1.5.0
+      picocolors: 1.1.1
+      pretty-format: 27.5.1
+
   '@testing-library/user-event@14.6.1(@testing-library/dom@10.4.0)':
     dependencies:
       '@testing-library/dom': 10.4.0
+
+  '@testing-library/user-event@14.6.1(@testing-library/dom@10.4.1)':
+    dependencies:
+      '@testing-library/dom': 10.4.1
 
   '@tootallnate/quickjs-emscripten@0.23.0': {}
 

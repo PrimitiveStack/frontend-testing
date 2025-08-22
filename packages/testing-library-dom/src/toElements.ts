@@ -1,4 +1,8 @@
 import type { PageConfig } from "@primitivestack/frontend-testing-core";
+import {
+	type SelectorMatcherOptions,
+	type waitForOptions,
+} from "@testing-library/dom";
 import { map } from "ramda";
 import type { ArrayTail, SimplifyDeep } from "type-fest";
 import { type ElementHandler, toHandler } from "./toHandler";
@@ -8,35 +12,62 @@ type AwaitedReturn<T extends (...args: any) => unknown> = Awaited<
 >;
 
 export type Screen<TElement extends Element> = {
-	getByText: <T extends TElement>(id: string, ...params: any[]) => T;
-	findByText: <T extends TElement>(id: string, ...params: any[]) => Promise<T>;
+	getByText: <T extends TElement>(
+		id: string,
+		options?: SelectorMatcherOptions,
+	) => T;
+	findByText: <T extends TElement>(
+		id: string,
+		options?: SelectorMatcherOptions,
+		waitForElementOptions?: waitForOptions,
+	) => Promise<T>;
 	findAllByText: <T extends TElement>(
 		id: string,
-		...params: any[]
+		options?: SelectorMatcherOptions,
+		waitForElementOptions?: waitForOptions,
 	) => Promise<T[]>;
-	queryByText: <T extends TElement>(id: string, ...params: any[]) => T | null;
+	queryByText: <T extends TElement>(
+		id: string,
+		options?: SelectorMatcherOptions,
+	) => T | null;
 
-	getByLabelText: <T extends TElement>(id: string, ...params: any[]) => T;
+	getByLabelText: <T extends TElement>(
+		id: string,
+		options?: SelectorMatcherOptions,
+	) => T;
 	findByLabelText: <T extends TElement>(
 		id: string,
-		...params: any[]
+		options?: SelectorMatcherOptions,
+		waitForElementOptions?: waitForOptions,
 	) => Promise<T>;
 	findAllByLabelText: <T extends TElement>(
 		id: string,
-		...params: any[]
+		options?: SelectorMatcherOptions,
+		waitForElementOptions?: waitForOptions,
 	) => Promise<T[]>;
 	queryByLabelText: <T extends TElement>(
 		id: string,
-		...params: any[]
+		options?: SelectorMatcherOptions,
 	) => T | null;
 
-	getByTitle: <T extends TElement>(id: string, ...params: any[]) => T;
-	findByTitle: <T extends TElement>(id: string, ...params: any[]) => Promise<T>;
+	getByTitle: <T extends TElement>(
+		id: string,
+		options?: SelectorMatcherOptions,
+	) => T;
+	findByTitle: <T extends TElement>(
+		id: string,
+		options?: SelectorMatcherOptions,
+		waitForElementOptions?: waitForOptions,
+	) => Promise<T>;
 	findAllByTitle: <T extends TElement>(
 		id: string,
-		...params: any[]
+		options?: SelectorMatcherOptions,
+		waitForElementOptions?: waitForOptions,
 	) => Promise<T[]>;
-	queryByTitle: <T extends TElement>(id: string, ...params: any[]) => T | null;
+	queryByTitle: <T extends TElement>(
+		id: string,
+		options?: SelectorMatcherOptions,
+	) => T | null;
 };
 
 export type ConvertPageConfig<

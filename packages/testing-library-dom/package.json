@@ -1,6 +1,6 @@
 {
 	"name": "@primitivestack/frontend-testing-library-dom",
-	"version": "0.0.23",
+	"version": "0.0.24",
 	"license": "MIT",
 	"publishConfig": {
 		"access": "public"
@@ -36,6 +36,7 @@
 		"ramda": "0.31.3"
 	},
 	"devDependencies": {
+		"@testing-library/dom": "10.4.1",
 		"@types/ramda": "0.31.0",
 		"@types/react": "19.1.8"
 	}
