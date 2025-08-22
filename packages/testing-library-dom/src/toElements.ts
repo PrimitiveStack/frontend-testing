@@ -7,39 +7,39 @@ type AwaitedReturn<T extends (...args: any) => unknown> = Awaited<
 	ReturnType<T>
 >;
 
-type Screen = {
-	getByText: <T extends Element>(id: string, ...params: any[]) => T;
-	findByText: <T extends Element>(id: string, ...params: any[]) => Promise<T>;
-	findAllByText: <T extends Element>(
+export type Screen<TElement extends Element = Element> = {
+	getByText: <T extends TElement>(id: string, ...params: any[]) => T;
+	findByText: <T extends TElement>(id: string, ...params: any[]) => Promise<T>;
+	findAllByText: <T extends TElement>(
 		id: string,
 		...params: any[]
 	) => Promise<T[]>;
-	queryByText: <T extends Element>(id: string, ...params: any[]) => T | null;
+	queryByText: <T extends TElement>(id: string, ...params: any[]) => T | null;
 
-	getByLabelText: <T extends Element>(id: string, ...params: any[]) => T;
-	findByLabelText: <T extends Element>(
+	getByLabelText: <T extends TElement>(id: string, ...params: any[]) => T;
+	findByLabelText: <T extends TElement>(
 		id: string,
 		...params: any[]
 	) => Promise<T>;
-	findAllByLabelText: <T extends Element>(
+	findAllByLabelText: <T extends TElement>(
 		id: string,
 		...params: any[]
 	) => Promise<T[]>;
-	queryByLabelText: <T extends Element>(
+	queryByLabelText: <T extends TElement>(
 		id: string,
 		...params: any[]
 	) => T | null;
 
-	getByTitle: <T extends Element>(id: string, ...params: any[]) => T;
-	findByTitle: <T extends Element>(id: string, ...params: any[]) => Promise<T>;
-	findAllByTitle: <T extends Element>(
+	getByTitle: <T extends TElement>(id: string, ...params: any[]) => T;
+	findByTitle: <T extends TElement>(id: string, ...params: any[]) => Promise<T>;
+	findAllByTitle: <T extends TElement>(
 		id: string,
 		...params: any[]
 	) => Promise<T[]>;
-	queryByTitle: <T extends Element>(id: string, ...params: any[]) => T | null;
+	queryByTitle: <T extends TElement>(id: string, ...params: any[]) => T | null;
 };
 
-type ConvertPageConfig<
+export type ConvertPageConfig<
 	TConfig extends PageConfig,
 	TScreen extends Screen,
 > = SimplifyDeep<{
@@ -137,11 +137,7 @@ type ConvertPageConfig<
 			: {});
 }>;
 
-export const toElements = <
-	TConfig extends PageConfig,
-	TElement extends Element,
-	TScreen extends Screen,
->(
+export const toElements = <TConfig extends PageConfig, TScreen extends Screen>(
 	config: TConfig,
 	screen: TScreen,
 ) =>
