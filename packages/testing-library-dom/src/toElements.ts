@@ -15,6 +15,7 @@ type Screen = {
 		...params: any[]
 	) => Promise<T[]>;
 	queryByText: <T extends Element>(id: string, ...params: any[]) => T | null;
+
 	getByLabelText: <T extends Element>(id: string, ...params: any[]) => T;
 	findByLabelText: <T extends Element>(
 		id: string,
@@ -28,6 +29,14 @@ type Screen = {
 		id: string,
 		...params: any[]
 	) => T | null;
+
+	getByTitle: <T extends Element>(id: string, ...params: any[]) => T;
+	findByTitle: <T extends Element>(id: string, ...params: any[]) => Promise<T>;
+	findAllByTitle: <T extends Element>(
+		id: string,
+		...params: any[]
+	) => Promise<T[]>;
+	queryByTitle: <T extends Element>(id: string, ...params: any[]) => T | null;
 };
 
 type ConvertPageConfig<
@@ -107,6 +116,24 @@ type ConvertPageConfig<
 							...params: ArrayTail<Parameters<TScreen["findAllByLabelText"]>>
 						): Promise<ElementHandler<T>[]>;
 					}
+			: {}) &
+		(TConfig[K] extends { attributes: { title: string } }
+			? {
+					getByTitle<T extends ReturnType<TScreen["getByTitle"]>>(
+						...params: ArrayTail<Parameters<TScreen["getByTitle"]>>
+					): ElementHandler<T>;
+					findByTitle<T extends ReturnType<TScreen["queryByTitle"]>>(
+						...params: ArrayTail<Parameters<TScreen["queryByTitle"]>>
+					): T extends Element ? ElementHandler<T> : null;
+					waitForByTitle<T extends AwaitedReturn<TScreen["findByTitle"]>>(
+						...params: ArrayTail<Parameters<TScreen["findByTitle"]>>
+					): Promise<ElementHandler<T>>;
+					waitForAllByTitle<
+						T extends AwaitedReturn<TScreen["findAllByTitle"]>[number],
+					>(
+						...params: ArrayTail<Parameters<TScreen["findAllByTitle"]>>
+					): Promise<ElementHandler<T>[]>;
+				}
 			: {});
 }>;
 
@@ -119,7 +146,7 @@ export const toElements = <
 	screen: TScreen,
 ) =>
 	map((value) => {
-		const { properties } = value;
+		const { properties, attributes } = value;
 
 		let element = {} as Record<PropertyKey, unknown>;
 
@@ -193,6 +220,26 @@ export const toElements = <
 						toHandler(await screen.findByLabelText(value, ...params)),
 					waitForAllByLabelText: async (value: string, ...params: any[]) =>
 						(await screen.findAllByLabelText(value, ...params)).map(toHandler),
+				};
+			}
+		}
+
+		if (attributes) {
+			const { title } = attributes;
+
+			if (title) {
+				element = {
+					...element,
+					getByTitle: (...params: any[]) =>
+						toHandler(screen.getByTitle(title, ...params)),
+					findByTitle(...params: any[]) {
+						const element = screen.queryByTitle(title, ...params);
+						return element ? toHandler(element) : element;
+					},
+					waitForByTitle: async (...params: any[]) =>
+						toHandler(await screen.findByTitle(title, ...params)),
+					waitForAllByTitle: async (...params: any[]) =>
+						(await screen.findAllByTitle(title, ...params)).map(toHandler),
 				};
 			}
 		}
