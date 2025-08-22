@@ -1,7 +1,7 @@
-import type { PageConfig } from "@primitivestack/frontend-testing-core";
-import {
-	type SelectorMatcherOptions,
-	type waitForOptions,
+import type { ComponentConfig } from "@primitivestack/frontend-testing-core";
+import type {
+	SelectorMatcherOptions,
+	waitForOptions,
 } from "@testing-library/dom";
 import { map } from "ramda";
 import type { ArrayTail, SimplifyDeep } from "type-fest";
@@ -71,7 +71,7 @@ export type Screen<TElement extends Element = Element> = {
 };
 
 export type ConvertPageConfig<
-	TConfig extends PageConfig,
+	TConfig extends ComponentConfig,
 	TElement extends Element,
 > = SimplifyDeep<{
 	[K in keyof TConfig]: (TConfig[K] extends { properties: { text: infer P } }
@@ -195,7 +195,7 @@ export type ConvertPageConfig<
 }>;
 
 export const toElements = <
-	TConfig extends PageConfig,
+	TConfig extends ComponentConfig,
 	TElement extends Element,
 >(
 	config: TConfig,

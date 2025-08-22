@@ -1,4 +1,4 @@
-import type { PageConfig } from "@primitivestack/frontend-testing-core";
+import type { ComponentConfig } from "@primitivestack/frontend-testing-core";
 import type { Driver } from "@primitivestack/frontend-testing-puppeteer";
 import type {
 	ElementHandle,
@@ -9,7 +9,11 @@ import type {
 import { map } from "ramda";
 import type { SimplifyDeep } from "type-fest";
 
-type ConvertPageConfig<TConfig extends PageConfig, TOne, TAll> = SimplifyDeep<{
+type ConvertPageConfig<
+	TConfig extends ComponentConfig,
+	TOne,
+	TAll,
+> = SimplifyDeep<{
 	[K in keyof TConfig]: (TConfig[K] extends {
 		attributes: Record<string, string>;
 	}
@@ -79,7 +83,10 @@ type ConvertPageConfig<TConfig extends PageConfig, TOne, TAll> = SimplifyDeep<{
 const toAttributeSelector = (name: string, value: string) =>
 	`[${name}="${value}"]`;
 
-export const toElements = <T extends PageConfig>(config: T, driver: Driver) =>
+export const toElements = <T extends ComponentConfig>(
+	config: T,
+	driver: Driver,
+) =>
 	map((value) => {
 		const { properties, attributes } = value;
 

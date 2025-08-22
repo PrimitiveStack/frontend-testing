@@ -1,11 +1,11 @@
 import type {
+	ComponentConfig,
 	PageController as IPageController,
-	PageConfig,
 } from "@primitivestack/frontend-testing-core";
 import { type Screen, toElements } from "./toElements";
 
 export abstract class PageController<
-	TConfig extends PageConfig,
+	TConfig extends ComponentConfig,
 	TElement extends Element = Element,
 > implements IPageController
 {
