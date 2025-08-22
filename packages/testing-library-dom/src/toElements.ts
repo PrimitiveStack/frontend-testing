@@ -226,21 +226,21 @@ export const toElements = <
 						waitForAllByText: async (...params: any[]) =>
 							(await screen.findAllByText(value, ...params)).map(toHandler),
 					};
+				} else {
+					element = {
+						...element,
+						getByText: (value: string, ...params: any[]) =>
+							toHandler(screen.getByText(value, ...params)),
+						findByText(value: string, ...params: any[]) {
+							const element = screen.queryByText(value, ...params);
+							return element ? toHandler(element) : element;
+						},
+						waitForByText: async (value: string, ...params: any[]) =>
+							toHandler(await screen.findByText(value, ...params)),
+						waitForAllByText: async (value: string, ...params: any[]) =>
+							(await screen.findAllByText(value, ...params)).map(toHandler),
+					};
 				}
-
-				element = {
-					...element,
-					getByText: (value: string, ...params: any[]) =>
-						toHandler(screen.getByText(value, ...params)),
-					findByText(value: string, ...params: any[]) {
-						const element = screen.queryByText(value, ...params);
-						return element ? toHandler(element) : element;
-					},
-					waitForByText: async (value: string, ...params: any[]) =>
-						toHandler(await screen.findByText(value, ...params)),
-					waitForAllByText: async (value: string, ...params: any[]) =>
-						(await screen.findAllByText(value, ...params)).map(toHandler),
-				};
 			}
 
 			if (labelText) {
@@ -262,21 +262,23 @@ export const toElements = <
 								toHandler,
 							),
 					};
+				} else {
+					element = {
+						...element,
+						getByLabelText: (value: string, ...params: any[]) =>
+							toHandler(screen.getByLabelText(value, ...params)),
+						findByLabelText(value: string, ...params: any[]) {
+							const element = screen.queryByLabelText(value, ...params);
+							return element ? toHandler(element) : element;
+						},
+						waitForByLabelText: async (value: string, ...params: any[]) =>
+							toHandler(await screen.findByLabelText(value, ...params)),
+						waitForAllByLabelText: async (value: string, ...params: any[]) =>
+							(await screen.findAllByLabelText(value, ...params)).map(
+								toHandler,
+							),
+					};
 				}
-
-				element = {
-					...element,
-					getByLabelText: (value: string, ...params: any[]) =>
-						toHandler(screen.getByLabelText(value, ...params)),
-					findByLabelText(value: string, ...params: any[]) {
-						const element = screen.queryByLabelText(value, ...params);
-						return element ? toHandler(element) : element;
-					},
-					waitForByLabelText: async (value: string, ...params: any[]) =>
-						toHandler(await screen.findByLabelText(value, ...params)),
-					waitForAllByLabelText: async (value: string, ...params: any[]) =>
-						(await screen.findAllByLabelText(value, ...params)).map(toHandler),
-				};
 			}
 		}
 
