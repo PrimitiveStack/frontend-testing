@@ -11,7 +11,7 @@ type AwaitedReturn<T extends (...args: any) => unknown> = Awaited<
 	ReturnType<T>
 >;
 
-export type Screen<TElement extends Element> = {
+export type Screen<TElement extends Element = Element> = {
 	getByText: <T extends TElement>(
 		id: string,
 		options?: SelectorMatcherOptions,

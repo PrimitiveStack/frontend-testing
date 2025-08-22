@@ -6,7 +6,7 @@ import { type Screen, toElements } from "./toElements";
 
 export abstract class PageController<
 	TConfig extends PageConfig,
-	TElement extends Element,
+	TElement extends Element = Element,
 > implements IPageController
 {
 	protected readonly elements;
