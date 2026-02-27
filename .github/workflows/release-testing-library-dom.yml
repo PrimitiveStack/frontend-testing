@@ -1,9 +1,11 @@
-name: Release
+name: Release (testing-library-dom)
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'packages/testing-library-dom/**'
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -15,6 +17,10 @@ jobs:
     permissions:
       contents: write
       id-token: write
+
+    defaults:
+      run:
+        working-directory: packages/testing-library-dom
 
     steps:
       - name: Checkout
